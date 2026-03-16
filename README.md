@@ -1,82 +1,153 @@
-=========================================
-📰 PROJECT SUMMARY
-=========================================
+# 📰 Fake News Detection using Big Data & NLP
 
-Project Title:
-Fake News Detection using Big Data and NLP
+![Python](https://img.shields.io/badge/Python-3.x-blue?style=flat&logo=python)
+![Scikit-learn](https://img.shields.io/badge/Scikit--learn-ML-orange?style=flat&logo=scikit-learn)
+![PySpark](https://img.shields.io/badge/Apache_Spark-PySpark-red?style=flat&logo=apachespark)
+![NLP](https://img.shields.io/badge/NLP-TF--IDF-green?style=flat)
+![Accuracy](https://img.shields.io/badge/Accuracy-98.7%25-brightgreen?style=flat)
 
------------------------------------------
-1. Overview
------------------------------------------
-This project aims to detect fake news articles using Big Data technologies and Natural Language Processing (NLP). 
-It classifies news as either Fake (0) or Real (1) by analyzing the textual content of articles.
+A machine learning system that detects fake news articles using **Natural Language Processing (NLP)** and **Big Data** technologies. Built with two implementations — a fast scikit-learn baseline and a scalable Apache Spark pipeline.
 
-The system has two main implementations:
-1. Baseline Model – TF-IDF + Logistic Regression (built in Python)
-2. Big Data Model – PySpark Pipeline (scalable version for large datasets)
+---
 
------------------------------------------
-2. Objective
------------------------------------------
-The objective of this project is to automatically identify fake news articles using machine learning and Big Data tools, reducing misinformation spread on social media platforms.
+## 🎯 Problem Statement
 
------------------------------------------
-3. Dataset
------------------------------------------
-- Source: Fake and Real News Dataset (Kaggle)
-- Files Used: Fake.csv, True.csv
-- Combined File: combined_news.csv
-- Columns: title, text, label (0 = Fake, 1 = Real)
-- Total Records: ~44,819 articles
+Misinformation and fake news spread rapidly on social media platforms, causing real-world harm. This project automates the detection of fake vs. real news articles using ML, helping flag unreliable content at scale.
 
------------------------------------------
-4. Methodology
------------------------------------------
-Step 1: Data Preprocessing
+---
+
+## 📊 Results
+
+| Model | Accuracy | ROC-AUC | F1-Score |
+|-------|----------|---------|---------|
+| Baseline (TF-IDF + Logistic Regression) | **98.7%** | **0.99** | — |
+| Big Data (PySpark Pipeline) | — | **0.984** | **0.978** |
+
+---
+
+## 🗂️ Dataset
+
+- **Source:** [Fake and Real News Dataset — Kaggle](https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset)
+- **Files:** `Fake.csv` + `True.csv` → merged into `combined_news.csv`
+- **Size:** ~44,819 news articles
+- **Labels:** `0` = Fake News, `1` = Real News
+
+---
+
+## 🏗️ Project Structure
+```
+Fake-news-detection_bigData/
+│
+├── baseline_tfidf.py          # Scikit-learn baseline model
+├── prepare_dataset.py         # Data loading and preprocessing
+├── spark_pipeline.py          # PySpark big data pipeline
+├── tfidf_logreg_model.joblib  # Saved trained model
+├── requirements.txt           # Python dependencies
+├── spark_fake_news_model/     # Saved Spark model artifacts
+└── README.md
+```
+
+---
+
+## ⚙️ Methodology
+
+### Step 1 — Data Preprocessing
+- Combined Fake.csv and True.csv with labels
 - Removed punctuation, URLs, and stopwords
-- Applied text normalization and stemming
+- Applied text normalization and stemming (NLTK)
 
-Step 2: Feature Extraction
-- Used TF-IDF to convert text into numerical vectors
+### Step 2 — Feature Extraction
+- **TF-IDF Vectorization** — converts text into numerical feature vectors based on word importance
 
-Step 3: Model Training
-- Trained Logistic Regression as baseline
-- Built a PySpark pipeline with:
-  Tokenizer → StopWordsRemover → HashingTF → IDF → Logistic Regression
+### Step 3 — Model Training
 
-Step 4: Evaluation
-- Accuracy, F1-Score, ROC-AUC were computed to measure performance
+**Baseline Model** (scikit-learn):
+```
+Text → TF-IDF Vectorizer → Logistic Regression → Prediction
+```
 
------------------------------------------
-5. Results
------------------------------------------
-Baseline Model (TF-IDF + Logistic Regression)
-- Accuracy: 0.987
-- ROC-AUC: 0.99
+**Big Data Model** (PySpark):
+```
+Text → Tokenizer → StopWordsRemover → HashingTF → IDF → Logistic Regression → Prediction
+```
 
-Big Data Model (PySpark)
-- Test ROC-AUC: 0.984
-- Test F1-Score: 0.978
+### Step 4 — Evaluation
+- Accuracy, F1-Score, ROC-AUC computed on held-out test set
+- Confusion matrix visualized with Seaborn/Matplotlib
 
------------------------------------------
-6. Tools & Technologies Used
------------------------------------------
-Programming Language: Python
-Libraries: Pandas, NumPy, Scikit-learn, NLTK, Matplotlib, Seaborn
-Big Data Framework: Apache Spark (PySpark)
-Environment: VS Code / Jupyter Notebook
+---
 
------------------------------------------
-7. Conclusion
------------------------------------------
-This project successfully detects fake news articles using machine learning and Big Data tools. 
-The baseline model performs efficiently for moderate datasets, while the PySpark version scales to large data volumes using distributed processing.
+## 🚀 How to Run
 
------------------------------------------
-8. Future Scope
------------------------------------------
-- Integration with live social media APIs for real-time fake news detection.
-- Use of deep learning models like LSTMs or Transformers for better accuracy.
-- Deployment as a web-based or cloud-based application.
+### 1. Clone the repo
+```bash
+git clone https://github.com/abdullahaziz723/Fake-news-detection_bigData.git
+cd Fake-news-detection_bigData
+```
 
-----------------------------------------
+### 2. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Prepare the dataset
+```bash
+python prepare_dataset.py
+```
+
+### 4. Run the baseline model
+```bash
+python baseline_tfidf.py
+```
+
+### 5. Run the PySpark pipeline (requires Apache Spark)
+```bash
+python spark_pipeline.py
+```
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Tools |
+|----------|-------|
+| Language | Python 3.x |
+| ML Library | Scikit-learn |
+| Big Data | Apache Spark (PySpark) |
+| NLP | NLTK, TF-IDF |
+| Data Processing | Pandas, NumPy |
+| Visualization | Matplotlib, Seaborn |
+| Environment | VS Code / Jupyter Notebook |
+
+---
+
+## 💡 Key Concepts Demonstrated
+
+- **NLP Pipeline** — text cleaning, tokenization, vectorization
+- **TF-IDF** — Term Frequency–Inverse Document Frequency for feature extraction
+- **Logistic Regression** — binary classification (Fake vs Real)
+- **Apache Spark** — distributed processing for large-scale datasets
+- **Model Persistence** — saving and loading trained models with joblib
+- **Evaluation Metrics** — Accuracy, Precision, Recall, F1, ROC-AUC
+
+---
+
+## 🔮 Future Scope
+
+- Real-time detection via social media APIs (Twitter/X, Reddit)
+- Deep learning models — LSTMs or BERT Transformers for better accuracy
+- Web app deployment using Flask or FastAPI
+- Cloud deployment on AWS/GCP for production scale
+
+---
+
+## 👤 Author
+
+**Abdullah Aziz**  
+GitHub: [@abdullahaziz723](https://github.com/abdullahaziz723)
+
+---
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
